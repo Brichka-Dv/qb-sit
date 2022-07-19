@@ -2,10 +2,13 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local debugProps, sitting, lastPos, currentSitCoords, currentScenario, occupied = {}
 local disableControls = false
 local currentObj = nil
+local displayText = ""
 
 exports('sitting', function()
     return sitting
 end)
+
+
 
 Citizen.CreateThread(function()
 	while true do
@@ -13,16 +16,18 @@ Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
 
 		if sitting then
-			helpText(Config.GetUpText)
+			exports['qb-core']:DrawText('<b style=color:rgb(255,0,0);>[E]</b> - Get Up', 'left')
 		end
 
 		if sitting and not IsPedUsingScenario(playerPed, currentScenario) then
 			wakeup()
+			exports['qb-core']:HideText()
 		end
 
 		if IsControlPressed(0, Config.GetUpKey) and IsInputDisabled(0) and IsPedOnFoot(playerPed) then
 			if sitting then
 				wakeup()
+				exports['qb-core']:HideText()
 			end			
 		end
 	end
